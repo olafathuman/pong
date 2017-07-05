@@ -126,9 +126,9 @@ class game():
             self.handle_events() 
             self.move()
             self.draw()
-            if self.score1value>2:
+            if self.score1value>9:
                 self.phase=3
-            elif self.score2value>2:
+            elif self.score2value>9:
                 self.phase=2
             
 

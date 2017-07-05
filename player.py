@@ -8,7 +8,7 @@ class player():
         self.rect = None
         self.surface=None
         self.direction=0
-        self.speed=1
+        self.speed=2
         self.color=(255,255,255)
 
     def set_surface(self,surface):
@@ -38,3 +38,7 @@ class player():
             self.direction=1
         else:
             self.direction=0
+
+    def reset_paddle(self):
+        
+        self.rect.topleft=[self.rect.topleft[0],190]

@@ -31,7 +31,13 @@ class game():
 
         self.score1rect = None
         self.score2rect = None
-    
+        
+        self.choice1=None
+        self.choice2=None
+        
+        self.choice1rect=None
+        self.choice2rect=None
+
         self.score1color = (255,255,255)
         self.score2color = (255,255,255)
        
@@ -112,9 +118,11 @@ class game():
         elif self.ball.rect[0]<=0:
             self.score1value+=1
             self.ball.reset_ball()
+            self.reset_players()
         elif self.ball.rect[0]>=620:
             self.score2value+=1
             self.ball.reset_ball()
+            self.reset_players()
 
     def handle_events(self):
 
@@ -146,3 +154,7 @@ class game():
                         self.player2.direction=0
                 if event.key == K_ESCAPE:
                     sys.exit()
+
+    def reset_players(self):
+        self.player1.reset_paddle()
+        self.player2.reset_paddle()

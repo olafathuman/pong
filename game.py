@@ -38,7 +38,7 @@ class game():
 
         self.player_opts=["player","CPU"]
         self.player1_opt=0
-        self.player2_opt=0
+        self.player2_opt=1
 
 
     def set_scores(self):
@@ -49,8 +49,8 @@ class game():
         self.score1rect=self.score1.get_rect()
         self.score2rect=self.score2.get_rect()
 
-        self.score1rect.move(480,0)
-        self.score2rect.move(160,0)
+        self.score1rect=self.score1rect.move(480,0)
+        self.score2rect=self.score2rect.move(160,0)
 
     def set_score1(self):
         
@@ -86,7 +86,10 @@ class game():
         pygame.display.flip()
 
     def move(self):
-        
+        if self.player1_opt==1:
+            self.player1.ai_move(self.ball.rect)
+        if self.player2_opt==1:
+            self.player2.ai_move(self.ball.rect)
         self.player1.move()
         self.player2.move()
         self.ball.move()
@@ -100,12 +103,16 @@ class game():
                 self.ball.player_bounce(1)
             else:
                 self.ball.player_bounce(-1)
-        elif self.ball.rect[1]==0 or self.ball.rect[1]==460:
+        elif self.ball.rect[1]<=0:
+            self.ball.rect[1]=1
             self.ball.vertical_bounce()
-        elif self.ball.rect[0]==0:
+        elif self.ball.rect[1]>=460:
+            self.ball.rect[1]=459
+            self.ball.vertical_bounce()
+        elif self.ball.rect[0]<=0:
             self.score1value+=1
             self.ball.reset_ball()
-        elif self.ball.rect[0]==620:
+        elif self.ball.rect[0]>=620:
             self.score2value+=1
             self.ball.reset_ball()
 
@@ -115,22 +122,27 @@ class game():
             if(event.type == pygame.QUIT):
                sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key==K_UP:
-                    self.player2.direction=-1
-                elif event.key == K_DOWN:
-                    self.player2.direction=1
-                elif event.key == K_w:
-                    self.player1.direction=-1
-                elif event.key == K_s:
-                    self.player1.direction=1
+                if self.player1_opt==0:
+                    if event.key==K_UP:
+                        self.player1.direction=-1
+                    elif event.key == K_DOWN:
+                        self.player1.direction=1
+                if self.player2_opt==0:
+                    if event.key == K_w:
+                        self.player2.direction=-1
+                    if event.key == K_s:
+                        self.player2.direction=1
             elif event.type == pygame.KEYUP:
-                if event.key==K_UP:
-                   self.player2.direction=0
-                elif event.key == K_DOWN:
-                   self.player2.direction=0
-                elif event.key== K_w:
-                   self.player1.direction=0
-                elif event.key == K_s:
-                   self.player1.direction=0
-                elif event.key == K_ESCAPE:
-                   sys.exit()
+                
+                if self.player1_opt==0:
+                    if event.key==K_UP:
+                        self.player1.direction=0
+                    elif event.key == K_DOWN:
+                        self.player1.direction=0
+                if self.player2_opt==0:
+                    if event.key== K_w:
+                        self.player2.direction=0
+                    if event.key == K_s:
+                        self.player2.direction=0
+                if event.key == K_ESCAPE:
+                    sys.exit()

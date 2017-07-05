@@ -26,4 +26,15 @@ class player():
         surface.blit(self.surface,self.rect)
 
     def move(self):
-        self.rect = self.rect.move(0,self.direction*self.speed)
+        if self.rect[1]>0 and self.direction==-1:
+            self.rect = self.rect.move(0,self.direction*self.speed)
+        elif self.rect[1]<380 and self.direction==1:
+            self.rect = self.rect.move(0,self.direction*self.speed)
+
+    def ai_move(self,ball):
+        if ball[1]<self.rect.centery:
+            self.direction=-1
+        elif ball[1]>self.rect.centery:
+            self.direction=1
+        else:
+            self.direction=0

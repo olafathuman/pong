@@ -7,8 +7,8 @@ class ball():
     def __init__(self):
         self.rect = None
         self.surface = None
-        self.current_speed=1
-        self.base_speed=1
+        self.current_speed=1.0
+        self.base_speed=1.0
         self.direction=[0,0]
         self.reset_position=[310,230]
 
@@ -21,17 +21,18 @@ class ball():
     
     def vertical_bounce(self):
         self.direction[1]=self.direction[1]*-1
-        self.current_speed+=0.1
+        #self.current_speed+=0.25
 
     def player_bounce(self,y):
         self.direction[0]=self.direction[0]*-1
         self.direction[1]=y
+        self.current_speed+=0.25
 
     def reset_ball(self):
         if self.direction[0]==0:
             self.direction[0]=1
         else:
-            self.direction[0]=(self.direction[0]*-1,0)
+            self.direction[0]=(self.direction[0]*-1)
             self.direction[1]=0
         self.rect.topleft=(self.reset_position)
         self.current_speed=self.base_speed
@@ -42,3 +43,5 @@ class ball():
 
     def move(self):
         self.rect=self.rect.move(self.direction[0]*self.current_speed,self.direction[1]*self.current_speed)
+
+

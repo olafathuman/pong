@@ -10,7 +10,7 @@ class game():
 
         self.player1=player()
         self.player2=player()
-        self.game_ball = ball()
+        self.ball = ball()
         self.screen= None    
         self.screen_color=(0,0,0)
 
@@ -22,8 +22,7 @@ class game():
         self.player2.set_pos(0,190)
         self.ball.reset_ball()
 
-        self.font = pygame.font.Font(None,50)
-
+        self.font=None
         self.score1value=0
         self.score2value=0
 
@@ -32,10 +31,10 @@ class game():
 
         self.score1rect = None
         self.score2rect = None
-
-        self.set_scores()
-        self.set_score_rects()
-
+    
+        self.score1color = (255,255,255)
+        self.score2color = (255,255,255)
+       
 
         self.player_opts=["player","CPU"]
         self.player1_opt=0
@@ -55,18 +54,24 @@ class game():
 
     def set_score1(self):
         
-        self.score1=font.render(str(self.score1value),True,self.score1color,(0,0,0))
+        self.score1=self.font.render(str(self.score1value),True,self.score1color,(0,0,0))
 
     def set_score2(self):
-        self.score2=font.render(str(self.score2value),True,self.score2color,(0,0,0))
+        self.score2=self.font.render(str(self.score2value),True,self.score2color,(0,0,0))
 
     def play(self):
         pygame.init()
-        self.screen = pygame.displaye.set_mode((640,480))
+        self.screen = pygame.display.set_mode((640,480))
+        
+        self.font = pygame.font.Font(None,50)
+        self.set_scores()
+        self.set_score_rects()
 
         while 1:
-
+            self.handle_events() 
+            self.move()
             self.draw()
+            
 
     def draw(self):
         
@@ -75,12 +80,12 @@ class game():
         self.player2.draw(self.screen)
         self.ball.draw(self.screen)
         self.set_scores()
-        self.screen.blit(self.score1,self.score1pos)
-        self.screen.blit(self.score2,self.score2pos)
+        self.screen.blit(self.score1,self.score1rect)
+        self.screen.blit(self.score2,self.score2rect)
         
         pygame.display.flip()
 
-    def self.move(self):
+    def move(self):
         
         self.player1.move()
         self.player2.move()
@@ -90,7 +95,7 @@ class game():
                 self.ball.player_bounce(1)
             else: 
                 self.ball.player_bounce(-1)
-        elif self.ball.rect.colliderect(self.player2.rect)
+        elif self.ball.rect.colliderect(self.player2.rect):
             if self.player2.direction==1:
                 self.ball.player_bounce(1)
             else:
@@ -103,3 +108,29 @@ class game():
         elif self.ball.rect[0]==620:
             self.score2value+=1
             self.ball.reset_ball()
+
+    def handle_events(self):
+
+        for event in pygame.event.get():
+            if(event.type == pygame.QUIT):
+               sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key==K_UP:
+                    self.player2.direction=-1
+                elif event.key == K_DOWN:
+                    self.player2.direction=1
+                elif event.key == K_w:
+                    self.player1.direction=-1
+                elif event.key == K_s:
+                    self.player1.direction=1
+            elif event.type == pygame.KEYUP:
+                if event.key==K_UP:
+                   self.player2.direction=0
+                elif event.key == K_DOWN:
+                   self.player2.direction=0
+                elif event.key== K_w:
+                   self.player1.direction=0
+                elif event.key == K_s:
+                   self.player1.direction=0
+                elif event.key == K_ESCAPE:
+                   sys.exit()

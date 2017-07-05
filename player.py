@@ -42,3 +42,4 @@ class player():
     def reset_paddle(self):
         
         self.rect.topleft=[self.rect.topleft[0],190]
+        self.direction=0
